@@ -41,7 +41,7 @@
             <button type="button" onclick="generateCircuit()">Generate Circuit Diagram</button>
         </form>
 
-        <canvas id="circuitCanvas" width="800" height="600" style="border:1px solid #000; margin-top: 20px;"></canvas>
+        <canvas id="circuitCanvas" width="1000" height="600" style="border:1px solid #000; margin-top: 20px;"></canvas>
         <br>
         <button id="downloadBtn" style="display:none; margin-top: 10px;">Download Circuit Diagram</button>
     </main>
@@ -76,26 +76,37 @@
             function drawComponent(type, label, x, y) {
                 ctx.beginPath();
                 if (type === 'resistor') {
-                    ctx.moveTo(x, y - 20);
-                    ctx.lineTo(x + 20, y - 20);
-                    ctx.lineTo(x + 20, y + 20);
-                    ctx.lineTo(x - 20, y + 20);
-                    ctx.lineTo(x - 20, y - 20);
+                    // Draw a resistor with a zigzag pattern
+                    ctx.moveTo(x - 20, y);
+                    ctx.lineTo(x - 10, y - 10);
+                    ctx.lineTo(x, y + 10);
+                    ctx.lineTo(x + 10, y - 10);
+                    ctx.lineTo(x + 20, y + 10);
+                    ctx.lineTo(x + 30, y);
                     ctx.stroke();
-                    ctx.fillText(label, x - 15, y - 30);
+                    ctx.fillText(label, x - 15, y - 20);
                 } else if (type === 'capacitor') {
-                    ctx.moveTo(x - 10, y - 20);
-                    ctx.lineTo(x - 10, y + 20);
-                    ctx.moveTo(x + 10, y - 20);
-                    ctx.lineTo(x + 10, y + 20);
+                    // Draw a capacitor
+                    ctx.moveTo(x - 20, y);
+                    ctx.lineTo(x - 10, y);
+                    ctx.moveTo(x + 10, y);
+                    ctx.lineTo(x + 20, y);
                     ctx.stroke();
-                    ctx.fillText(label, x - 20, y - 30);
+                    ctx.moveTo(x - 10, y - 15);
+                    ctx.lineTo(x - 10, y + 15);
+                    ctx.moveTo(x + 10, y - 15);
+                    ctx.lineTo(x + 10, y + 15);
+                    ctx.stroke();
+                    ctx.fillText(label, x - 30, y - 20);
                 } else if (type === 'inductor') {
-                    ctx.arc(x, y, 10, 0, Math.PI, false);
-                    ctx.arc(x + 20, y, 10, 0, Math.PI, false);
-                    ctx.arc(x + 40, y, 10, 0, Math.PI, false);
+                    // Draw an inductor
+                    ctx.moveTo(x - 20, y);
+                    ctx.arc(x - 10, y, 10, Math.PI, 0, false);
+                    ctx.arc(x + 10, y, 10, Math.PI, 0, false);
+                    ctx.arc(x + 30, y, 10, Math.PI, 0, false);
+                    ctx.lineTo(x + 40, y);
                     ctx.stroke();
-                    ctx.fillText(label, x - 10, y - 30);
+                    ctx.fillText(label, x - 10, y - 20);
                 }
             }
 
