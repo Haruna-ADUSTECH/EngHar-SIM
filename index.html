@@ -13,57 +13,87 @@
     </header>
     
     <main>
-        <form action="circuit.php" method="POST" id="circuitForm">
+        <form id="circuitForm">
             <h2>Input Components</h2>
             <div>
                 <label for="resistors">Resistors (R) - Comma Separated:</label>
-                <input type="text" id="resistors" name="resistors" placeholder="e.g., 5.6, 10.2, 3.3">
+                <input type="text" id="resistors" placeholder="e.g., 5.6, 10.2, 3.3">
             </div>
             <div>
                 <label for="resistor_arrangement">Resistor Arrangement:</label>
-                <select id="resistor_arrangement" name="resistor_arrangement">
+                <select id="resistor_arrangement">
                     <option value="series">Series</option>
                     <option value="parallel">Parallel</option>
                 </select>
             </div>
             <div>
                 <label for="capacitors">Capacitors (C) - Comma Separated:</label>
-                <input type="text" id="capacitors" name="capacitors" placeholder="e.g., 4.7, 2.2, 1.5">
+                <input type="text" id="capacitors" placeholder="e.g., 4.7, 2.2, 1.5">
             </div>
             <div>
                 <label for="capacitor_arrangement">Capacitor Arrangement:</label>
-                <select id="capacitor_arrangement" name="capacitor_arrangement">
+                <select id="capacitor_arrangement">
                     <option value="series">Series</option>
                     <option value="parallel">Parallel</option>
                 </select>
             </div>
             <div>
                 <label for="inductors">Inductors (L) - Comma Separated:</label>
-                <input type="text" id="inductors" name="inductors" placeholder="e.g., 1.0, 0.5, 2.2">
+                <input type="text" id="inductors" placeholder="e.g., 1.0, 0.5, 2.2">
             </div>
             <div>
                 <label for="inductor_arrangement">Inductor Arrangement:</label>
-                <select id="inductor_arrangement" name="inductor_arrangement">
+                <select id="inductor_arrangement">
                     <option value="series">Series</option>
                     <option value="parallel">Parallel</option>
                 </select>
             </div>
             <div>
                 <label for="voltage">Voltage (V) - Optional:</label>
-                <input type="text" id="voltage" name="voltage" placeholder="e.g., 12.0">
+                <input type="text" id="voltage" placeholder="e.g., 12.0">
             </div>
             <div>
                 <label for="current">Current (I) - Optional:</label>
-                <input type="text" id="current" name="current" placeholder="e.g., 2.5">
+                <input type="text" id="current" placeholder="e.g., 2.5">
             </div>
-            <button type="submit">Generate Circuit Diagram</button>
+            <button type="button" onclick="generateCircuit()">Generate Circuit Diagram</button>
         </form>
+
+        <canvas id="circuitCanvas" width="800" height="600" style="border:1px solid #000;"></canvas>
     </main>
 
     <footer>
         <p>© 2024 EngHar_SIM. All rights reserved.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        function generateCircuit() {
+            const canvas = document.getElementById('circuitCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw a basic circuit diagram
+            ctx.beginPath();
+            ctx.moveTo(100, 100);
+            ctx.lineTo(700, 100);
+            ctx.stroke();
+
+            // Example: Drawing resistors (you can add more logic based on your inputs)
+            const resistors = document.getElementById('resistors').value.split(',');
+            resistors.forEach((resistor, index) => {
+                ctx.fillText(`R${index + 1}: ${resistor} Ω`, 100, 120 + index * 20);
+            });
+
+            // Example: Drawing voltage source (if provided)
+            const voltage = document.getElementById('voltage').value;
+            if (voltage) {
+                ctx.fillText(`V: ${voltage} V`, 100, 200);
+            }
+
+            // Additional logic can be added here to draw capacitors, inductors, etc.
+        }
+    </script>
 </body>
 </html>
