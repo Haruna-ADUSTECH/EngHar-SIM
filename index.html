@@ -27,34 +27,8 @@
                 </select>
             </div>
             <div>
-                <label for="capacitors">Capacitors (C) - Comma Separated:</label>
-                <input type="text" id="capacitors" placeholder="e.g., 4.7, 2.2, 1.5">
-            </div>
-            <div>
-                <label for="capacitor_arrangement">Capacitor Arrangement:</label>
-                <select id="capacitor_arrangement">
-                    <option value="series">Series</option>
-                    <option value="parallel">Parallel</option>
-                </select>
-            </div>
-            <div>
-                <label for="inductors">Inductors (L) - Comma Separated:</label>
-                <input type="text" id="inductors" placeholder="e.g., 1.0, 0.5, 2.2">
-            </div>
-            <div>
-                <label for="inductor_arrangement">Inductor Arrangement:</label>
-                <select id="inductor_arrangement">
-                    <option value="series">Series</option>
-                    <option value="parallel">Parallel</option>
-                </select>
-            </div>
-            <div>
-                <label for="voltage">Voltage (V) - Optional:</label>
+                <label for="voltage">Voltage (V):</label>
                 <input type="text" id="voltage" placeholder="e.g., 12.0">
-            </div>
-            <div>
-                <label for="current">Current (I) - Optional:</label>
-                <input type="text" id="current" placeholder="e.g., 2.5">
             </div>
             <button type="button" onclick="generateCircuit()">Generate Circuit Diagram</button>
         </form>
@@ -72,32 +46,42 @@
         function generateCircuit() {
             const canvas = document.getElementById('circuitCanvas');
             const ctx = canvas.getContext('2d');
-
-            // Clear the canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Example: Drawing a basic circuit diagram
-            ctx.beginPath();
-            ctx.moveTo(100, 100);
-            ctx.lineTo(700, 100);
-            ctx.stroke();
-
-            // Example: Drawing resistors
             const resistors = document.getElementById('resistors').value.split(',');
+            const voltage = document.getElementById('voltage').value;
+            const arrangement = document.getElementById('resistor_arrangement').value;
+
+            // Draw the voltage source
+            ctx.beginPath();
+            ctx.arc(100, 300, 40, 0, 2 * Math.PI);  // Draw a circle for the voltage source
+            ctx.moveTo(60, 300);
+            ctx.lineTo(140, 300);
+            ctx.stroke();
+            ctx.fillText(`V: ${voltage} V`, 60, 290);  // Label the voltage source
+
+            let startX = 140;  // Starting position for the resistors
+            const stepX = 120;  // Space between components
+
+            // Draw resistors
             resistors.forEach((resistor, index) => {
-                ctx.fillText(`R${index + 1}: ${resistor} Ω`, 100, 120 + index * 20);
+                ctx.moveTo(startX, 270);
+                ctx.lineTo(startX + 60, 270);
+                ctx.lineTo(startX + 60, 330);
+                ctx.lineTo(startX, 330);
+                ctx.lineTo(startX, 270);
+                ctx.stroke();
+                ctx.fillText(`R${index + 1}: ${resistor} Ω`, startX + 15, 260);
+                startX += stepX;
             });
 
-            // Example: Drawing voltage source (if provided)
-            const voltage = document.getElementById('voltage').value;
-            if (voltage) {
-                ctx.fillText(`V: ${voltage} V`, 100, 200);
-            }
+            // Draw the connecting wires
+            ctx.moveTo(startX, 300);
+            ctx.lineTo(startX + 60, 300);
+            ctx.lineTo(100, 300);  // Closing the circuit
+            ctx.stroke();
 
-            // Display the download button
             document.getElementById('downloadBtn').style.display = 'inline';
-
-            // Set the download functionality
             document.getElementById('downloadBtn').onclick = function() {
                 const link = document.createElement('a');
                 link.download = 'circuit_diagram.png';
