@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EngHar_SIM - Circuit Designer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <img src="assets/logo.png" alt="EngHar_SIM Logo">
+        <h1>EngHar_SIM - Circuit Designer</h1>
+    </header>
+    
+    <main>
+        <form action="circuit.php" method="POST" id="circuitForm">
+            <h2>Input Components</h2>
+            <div>
+                <label for="resistors">Resistors (R) - Comma Separated:</label>
+                <input type="text" id="resistors" name="resistors" placeholder="e.g., 5.6, 10.2, 3.3">
+            </div>
+            <div>
+                <label for="resistor_arrangement">Resistor Arrangement:</label>
+                <select id="resistor_arrangement" name="resistor_arrangement">
+                    <option value="series">Series</option>
+                    <option value="parallel">Parallel</option>
+                </select>
+            </div>
+            <div>
+                <label for="capacitors">Capacitors (C) - Comma Separated:</label>
+                <input type="text" id="capacitors" name="capacitors" placeholder="e.g., 4.7, 2.2, 1.5">
+            </div>
+            <div>
+                <label for="capacitor_arrangement">Capacitor Arrangement:</label>
+                <select id="capacitor_arrangement" name="capacitor_arrangement">
+                    <option value="series">Series</option>
+                    <option value="parallel">Parallel</option>
+                </select>
+            </div>
+            <div>
+                <label for="inductors">Inductors (L) - Comma Separated:</label>
+                <input type="text" id="inductors" name="inductors" placeholder="e.g., 1.0, 0.5, 2.2">
+            </div>
+            <div>
+                <label for="inductor_arrangement">Inductor Arrangement:</label>
+                <select id="inductor_arrangement" name="inductor_arrangement">
+                    <option value="series">Series</option>
+                    <option value="parallel">Parallel</option>
+                </select>
+            </div>
+            <div>
+                <label for="voltage">Voltage (V) - Optional:</label>
+                <input type="text" id="voltage" name="voltage" placeholder="e.g., 12.0">
+            </div>
+            <div>
+                <label for="current">Current (I) - Optional:</label>
+                <input type="text" id="current" name="current" placeholder="e.g., 2.5">
+            </div>
+            <button type="submit">Generate Circuit Diagram</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>© 2024 EngHar_SIM. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
