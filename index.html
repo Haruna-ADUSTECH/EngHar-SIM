@@ -16,12 +16,20 @@
         <form id="circuitForm">
             <h2>Input Components</h2>
             <div>
-                <label for="resistors">Resistors (R) - Comma Separated:</label>
-                <input type="text" id="resistors" placeholder="e.g., 5.6, 10.2, 3.3">
+                <label for="component_type">Component Type:</label>
+                <select id="component_type">
+                    <option value="resistor">Resistor (R)</option>
+                    <option value="capacitor">Capacitor (C)</option>
+                    <option value="inductor">Inductor (L)</option>
+                </select>
             </div>
             <div>
-                <label for="resistor_arrangement">Resistor Arrangement:</label>
-                <select id="resistor_arrangement">
+                <label for="components">Components - Comma Separated:</label>
+                <input type="text" id="components" placeholder="e.g., 5.6, 10.2, 3.3">
+            </div>
+            <div>
+                <label for="arrangement">Component Arrangement:</label>
+                <select id="arrangement">
                     <option value="series">Series</option>
                     <option value="parallel">Parallel</option>
                 </select>
@@ -48,9 +56,10 @@
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            const resistors = document.getElementById('resistors').value.split(',');
+            const componentType = document.getElementById('component_type').value;
+            const components = document.getElementById('components').value.split(',');
             const voltage = document.getElementById('voltage').value;
-            const arrangement = document.getElementById('resistor_arrangement').value;
+            const arrangement = document.getElementById('arrangement').value;
 
             // Draw the voltage source
             ctx.beginPath();
@@ -60,24 +69,45 @@
             ctx.stroke();
             ctx.fillText(`V: ${voltage} V`, 60, 290);  // Label the voltage source
 
-            let startX = 140;  // Starting position for the resistors
-            const stepX = 120;  // Space between components
+            let startX = 140;  // Starting position for the components
+            const stepX = 150;  // Space between components
 
-            // Draw resistors
-            resistors.forEach((resistor, index) => {
-                ctx.moveTo(startX, 270);
-                ctx.lineTo(startX + 60, 270);
-                ctx.lineTo(startX + 60, 330);
-                ctx.lineTo(startX, 330);
-                ctx.lineTo(startX, 270);
-                ctx.stroke();
-                ctx.fillText(`R${index + 1}: ${resistor} Ω`, startX + 15, 260);
-                startX += stepX;
+            // Function to draw components based on type
+            function drawComponent(type, label, x, y) {
+                ctx.beginPath();
+                if (type === 'resistor') {
+                    ctx.moveTo(x, y - 20);
+                    ctx.lineTo(x + 20, y - 20);
+                    ctx.lineTo(x + 20, y + 20);
+                    ctx.lineTo(x - 20, y + 20);
+                    ctx.lineTo(x - 20, y - 20);
+                    ctx.stroke();
+                    ctx.fillText(label, x - 15, y - 30);
+                } else if (type === 'capacitor') {
+                    ctx.moveTo(x - 10, y - 20);
+                    ctx.lineTo(x - 10, y + 20);
+                    ctx.moveTo(x + 10, y - 20);
+                    ctx.lineTo(x + 10, y + 20);
+                    ctx.stroke();
+                    ctx.fillText(label, x - 20, y - 30);
+                } else if (type === 'inductor') {
+                    ctx.arc(x, y, 10, 0, Math.PI, false);
+                    ctx.arc(x + 20, y, 10, 0, Math.PI, false);
+                    ctx.arc(x + 40, y, 10, 0, Math.PI, false);
+                    ctx.stroke();
+                    ctx.fillText(label, x - 10, y - 30);
+                }
+            }
+
+            // Draw components
+            components.forEach((component, index) => {
+                const label = `${componentType.charAt(0).toUpperCase()}${index + 1}: ${component} Ω`;
+                drawComponent(componentType, label, startX + (index * stepX), 300);
             });
 
             // Draw the connecting wires
-            ctx.moveTo(startX, 300);
-            ctx.lineTo(startX + 60, 300);
+            ctx.moveTo(startX + (components.length * stepX), 300);
+            ctx.lineTo(startX + (components.length * stepX) + 60, 300);
             ctx.lineTo(100, 300);  // Closing the circuit
             ctx.stroke();
 
