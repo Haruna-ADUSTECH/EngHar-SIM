@@ -59,7 +59,9 @@
             <button type="button" onclick="generateCircuit()">Generate Circuit Diagram</button>
         </form>
 
-        <canvas id="circuitCanvas" width="800" height="600" style="border:1px solid #000;"></canvas>
+        <canvas id="circuitCanvas" width="800" height="600" style="border:1px solid #000; margin-top: 20px;"></canvas>
+        <br>
+        <button id="downloadBtn" style="display:none; margin-top: 10px;">Download Circuit Diagram</button>
     </main>
 
     <footer>
@@ -74,13 +76,13 @@
             // Clear the canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Draw a basic circuit diagram
+            // Example: Drawing a basic circuit diagram
             ctx.beginPath();
             ctx.moveTo(100, 100);
             ctx.lineTo(700, 100);
             ctx.stroke();
 
-            // Example: Drawing resistors (you can add more logic based on your inputs)
+            // Example: Drawing resistors
             const resistors = document.getElementById('resistors').value.split(',');
             resistors.forEach((resistor, index) => {
                 ctx.fillText(`R${index + 1}: ${resistor} Ω`, 100, 120 + index * 20);
@@ -92,7 +94,16 @@
                 ctx.fillText(`V: ${voltage} V`, 100, 200);
             }
 
-            // Additional logic can be added here to draw capacitors, inductors, etc.
+            // Display the download button
+            document.getElementById('downloadBtn').style.display = 'inline';
+
+            // Set the download functionality
+            document.getElementById('downloadBtn').onclick = function() {
+                const link = document.createElement('a');
+                link.download = 'circuit_diagram.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            };
         }
     </script>
 </body>
